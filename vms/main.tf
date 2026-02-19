@@ -6,6 +6,7 @@ data "template_file" "cloud_init" {
   template = file("${path.module}/cloud-init.yml")
   vars = {
     public_key = var.public_key
+    vm_name    = var.vm_name
   }
 }
 
