@@ -5,7 +5,7 @@ data "yandex_compute_image" "ubuntu" {
 data "template_file" "cloud_init" {
   template = file("${path.module}/cloud-init.yml")
   vars = {
-    ssh_public_key = var.ssh_public_key
+    public_key = var.ssh_public_key
   }
 }
 
