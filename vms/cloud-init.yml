@@ -17,24 +17,6 @@ packages:
   - git
   - net-tools
 
-write_files:
-  - path: /var/www/html/index.html
-    content: |
-      <!DOCTYPE html>
-      <html>
-      <head>
-          <title>Welcome to ${vm_name}</title>
-      </head>
-      <body>
-          <h1>Hello from ${vm_name}!</h1>
-          <p>Created by Terraform on ${current_date}</p>
-          <p>Hostname: ${hostname}</p>
-          <p>IP Address: ${ip_address}</p>
-      </body>
-      </html>
-    permissions: '0644'
-    owner: root:root
-
 runcmd:
   - systemctl enable nginx
   - systemctl start nginx
