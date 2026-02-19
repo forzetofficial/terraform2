@@ -24,9 +24,6 @@ module "marketing_vm" {
     role = "web"
     managed_by = "terraform"
   }
-  
-  # Явно укажем public_key из модуля vms (если нужно)
-  public_key = var.vms_ssh_root_key
 }
 
 # Модуль для analytics ВМ
@@ -44,6 +41,4 @@ module "analytics_vm" {
     role = "db"
     managed_by = "terraform"
   }
-  
-  public_key = var.vms_ssh_root_key
 }
