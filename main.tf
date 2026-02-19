@@ -15,7 +15,7 @@ module "marketing_vm" {
 
   vm_name        = "marketing-app"
   subnet_id      = yandex_vpc_subnet.develop.id
-  ssh_public_key = var.vms_ssh_root_key  # используем переменную из корня
+  public_key = var.vms_ssh_root_key  # используем переменную из корня
   
   # Метки для обозначения принадлежности к проекту marketing
   labels = {
@@ -35,7 +35,7 @@ module "analytics_vm" {
 
   vm_name        = "analytics-app"
   subnet_id      = yandex_vpc_subnet.develop.id
-  ssh_public_key = var.vms_ssh_root_key
+  public_key = var.vms_ssh_root_key
   
   # Метки для обозначения принадлежности к проекту analytics
   labels = {
