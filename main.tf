@@ -1,44 +1,36 @@
-resource "yandex_vpc_network" "develop" {
-  name = var.vpc_name
+module "vpc_dev" {
+  source   = "./vpc"
+  env_name = var.vpc_name
+  zone     = var.default_zone
+  cidr     = var.default_cidr[0]
 }
 
-resource "yandex_vpc_subnet" "develop" {
-  name           = var.vpc_name
-  zone           = var.default_zone
-  network_id     = yandex_vpc_network.develop.id
-  v4_cidr_blocks = var.default_cidr
-}
-
-# Модуль для marketing ВМ
 module "marketing_vm" {
   source = "./vms"
 
-  vm_name        = "marketing-app"
-  subnet_id      = yandex_vpc_subnet.develop.id
-  public_key = var.vms_ssh_root_key  # используем переменную из корня
+  vm_name    = "marketing-app"
+  subnet_id  = module.vpc_dev.subnet_id
+  public_key = var.vms_ssh_root_key
   
-  # Метки для обозначения принадлежности к проекту marketing
   labels = {
-    project = "marketing"
+    project     = "marketing"
     environment = "prod"
-    role = "web"
-    managed_by = "terraform"
+    role        = "web"
+    managed_by  = "terraform"
   }
 }
 
-# Модуль для analytics ВМ
 module "analytics_vm" {
   source = "./vms"
 
-  vm_name        = "analytics-app"
-  subnet_id      = yandex_vpc_subnet.develop.id
+  vm_name    = "analytics-app"
+  subnet_id  = module.vpc_dev.subnet_id
   public_key = var.vms_ssh_root_key
   
-  # Метки для обозначения принадлежности к проекту analytics
   labels = {
-    project = "analytics"
+    project     = "analytics"
     environment = "prod"
-    role = "db"
-    managed_by = "terraform"
+    role        = "db"
+    managed_by  = "terraform"
   }
 }

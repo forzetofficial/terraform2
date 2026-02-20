@@ -1,10 +1,12 @@
+#cloud-config
 users:
   - name: ubuntu
-    groups: sudo
+    groups: [sudo]
     shell: /bin/bash
-    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    sudo: ALL=(ALL) NOPASSWD:ALL
     ssh_authorized_keys:
       - ${public_key}
+    lock_passwd: true
 
 package_update: true
 package_upgrade: false
@@ -20,7 +22,7 @@ packages:
 runcmd:
   - systemctl enable nginx
   - systemctl start nginx
-  - systemctl status nginx || true
-  - curl localhost || true
+  - [systemctl, status, nginx]
+  - [curl, localhost]
 
 final_message: "VM is up after $UPTIME seconds"

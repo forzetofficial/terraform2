@@ -2,14 +2,6 @@ data "yandex_compute_image" "ubuntu" {
   family = var.image_family
 }
 
-data "template_file" "cloud_init" {
-  template = file("${path.module}/cloud-init.yml")
-  vars = {
-    public_key = var.public_key
-    vm_name    = var.vm_name
-  }
-}
-
 resource "yandex_compute_instance" "vm" {
   name        = var.vm_name
   platform_id = var.platform_id
@@ -35,8 +27,11 @@ resource "yandex_compute_instance" "vm" {
     nat       = true
   }
 
+  # ИСПРАВЛЕННЫЙ БЛОК METADATA
   metadata = {
-    user-data = data.template_file.cloud_init.rendered
+    user-data = templatefile("${path.module}/cloud-init.yml", {
+      public_key = chomp(var.public_key)
+    })
     serial-port-enable = "1"
   }
 
